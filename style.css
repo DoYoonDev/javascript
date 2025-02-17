@@ -6,8 +6,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: "East Sea Dokdo", cursive;
-    background-image: url(image/soju.jpeg);
   }
   
   .container {
@@ -24,14 +22,12 @@ body {
     justify-content: center;
   }
   
-  
-  
   .button-style {
     height: 80px;
     width: 100px;
     margin-top: 5px;
     border-radius: 50px;
-    font-size: 30pt;
+    font-size: 20pt;
     font-weight: bold;
   }
   .pre-title {
@@ -76,7 +72,7 @@ body {
       font-size: 11vw;
     }
     .form-control {
-      font-size: 8vw;
+      font-size: 4vw;
       max-width: 500px;
       margin-right: 0px;
     }
@@ -84,7 +80,7 @@ body {
       width: 40vw;
     }
     .button-reset {
-      font-size: 5vw;
+      font-size: 3vw;
       width: 80px;
       height: 60px;
     }
