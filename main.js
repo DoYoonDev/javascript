@@ -6,6 +6,7 @@ let resetButton = document.getElementById("reset-button");
 let chances = 3;
 let gameOver = false;
 let chanceArea = document.getElementById("chance-area");
+let answerArea = document.getElementById("answer-area");
 let history = [];
 
 playButton.addEventListener("click", play);
@@ -34,6 +35,7 @@ function play() {
 
     chances--;
     chanceArea.textContent = `남은기회 : ${chances}회`;
+    answerArea.textContent = `정답 : ${computerNum}`;
     console.log("chance", chances);
 
     if (userValue < computerNum) {
@@ -63,6 +65,11 @@ function reset() {
     pickRandom();
     chanceArea.textContent = `남은기회 : 3회`;
     resultArea.textContent = "결과값이 여기 나옵니다";
+    answerArea.textContent = "";
+    playButton.disabled = false;
+    gameOver = false;
+    chances = 3;
+    history = [];
 }
 
 pickRandom();
