@@ -1,33 +1,45 @@
 const API_KEY = `eb563bf813ce4e3484994073af51a24b`;
 let newsList = [];
+let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`);
 
 const menus = document.querySelectorAll(".list-inline li");
 menus.forEach((menu) =>
   menu.addEventListener("click", (event) => getNewsByCategory(event))
 );
 
+const getNews = async(url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    if (response.status === 200) {
+      if (data.articles.length === 0) {
+        throw new Error("검색 결과가 없습니다.");
+      }
+      newsList = data.articles;
+      render();
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    errorRender(error.message); // 에러 메시지 출력
+  }
+}
+
 const getLatesNews = async () => {
-  const url = new URL(
+  url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`
   );
-  const response = await fetch(url);
-  const data = await response.json();
-  newsList = data.articles;
-  render();
-  console.log("ddd", newsList);
+  getNews(url);
 };
 
 const getNewsByCategory = async (event) => {
   const category = event.target.textContent.toLowerCase();
   console.log("category", category);
-  const url = new URL(
+  url = new URL(
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}`
   );
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log("ddd", data);
-  newsList = data.articles;
-  render();
+  getNews(url);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -97,22 +109,7 @@ const getNewsByKeyword = async () => {
     `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&q=${keyword}`
   );
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log("검색 결과:", data);
-
-    if (data.articles.length === 0) {
-      alert("검색 결과가 없습니다.");
-    }
-
-    newsList = data.articles;
-    render();
-
-    searchInput.value = "";
-  } catch (error) {
-    console.error("검색 중 오류 발생:", error);
-  }
+  getNews(url);
 };
 
 // 200자 이상이면 ... 표기
@@ -160,4 +157,12 @@ const render = () => {
 
   document.getElementById("news-board").innerHTML = newsHTML;
 };
+
+const errorRender = (errorMessage) => {
+  const errorHTML = `<div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>`;
+  document.getElementById("news-board").innerHTML = errorHTML;
+}
+
 getLatesNews();
