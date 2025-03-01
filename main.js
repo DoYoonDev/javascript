@@ -1,4 +1,4 @@
-const API_KEY = `eb563bf813ce4e3484994073af51a24b`;
+const API_KEY = `4d52698a98e84e07a18106b9123fabb0`;
 let newsList = [];
 let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`);
 
