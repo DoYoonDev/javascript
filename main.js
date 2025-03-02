@@ -176,18 +176,38 @@ const errorRender = (errorMessage) => {
 const paginationRender = () => {
   const totalPage = Math.ceil(totalResults/pageSize);
   const pageGroup = Math.ceil(page/groupSize);
-  let lastPage = pageGroup * groupSize;
-  if (lastPage > totalPage) {
-    lastPage = totalPage;
+  let last = pageGroup * 5;
+  if (last > totalPage) {
+    // 마지막 그룹이 5개 이하이면
+    last = totalPage;
+  }
+  let first = last - 4 <= 0 ? 1 : last - 4; // 첫그룹이 5이하이면
+
+  let paginationHTML = "";
+
+  if (page > 1) {
+    paginationHTML = `<li class="page-item" onclick="pageClick(1)">
+                        <a class="page-link" href='#js-bottom'>&lt;&lt;</a>
+                      </li>
+                      <li class="page-item" onclick="pageClick(${page - 1})">
+                        <a class="page-link" href='#js-bottom'>&lt;</a>
+                      </li>`;
+  }
+  for (let i = first; i <= last; i++) {
+    paginationHTML += `<li class="page-item ${i == page ? "active" : ""}" >
+                        <a class="page-link" href='#js-bottom' onclick="pageClick(${i})" >${i}</a>
+                       </li>`;
   }
 
-  const firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
-
-  let paginationHTML = ``;
-
-  for (let i = firstPage; i < lastPage; i++) {
-    paginationHTML += `<li class="page-item"><a class="page-link" onclick="moveToPage(${i})">${i}</a></li>`;    
+  if (page < totalPage) {
+    paginationHTML += `<li class="page-item" onclick="pageClick(${page + 1})">
+                        <a  class="page-link" href='#js-program-detail-bottom'>&gt;</a>
+                       </li>
+                       <li class="page-item" onclick="pageClick(${totalPage})">
+                        <a class="page-link" href='#js-bottom'>&gt;&gt;</a>
+                       </li>`;
   }
+
   document.querySelector(".pagination").innerHTML = paginationHTML;
   // <nav aria-label="Page navigation example">
   //   <ul class="pagination">
@@ -200,9 +220,8 @@ const paginationRender = () => {
   // </nav>
 }
 
-const moveToPage = (pageNum) => {
+const pageClick = (pageNum) => {
   page = pageNum;
-  
   getNews(url);
 }
 
